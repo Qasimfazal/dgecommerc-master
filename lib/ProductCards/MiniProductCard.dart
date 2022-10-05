@@ -13,7 +13,7 @@ class MiniProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 100.h,
+      height: 80.h,
       // width: 100.w,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -29,10 +29,12 @@ class MiniProductCard extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(width: 10.w,),
-          Image.network(  AppConfig.RAW_BASE_URL1+'/'+img!,height: 90.h,),
+          Container(
+              height: 60,
+              child: Image.network(  AppConfig.RAW_BASE_URL1+'/'+img!,height: 70.h,)),
 
           SizedBox(width: 10.w,),
           Column(
@@ -41,33 +43,38 @@ class MiniProductCard extends StatelessWidget {
             children: [
               Text(name??'Jougers',style: TextStyle(fontSize: 11.sp),),
               Text(unit??'Addidas',style: TextStyle(fontSize: 12.sp),),
-              Row(
+              Container(
+                width: MediaQuery.of(context).size.width/2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(price??'\$1200.0',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                  //  SizedBox(width: 50.w,),
 
-                children: [
-                  Text(price??'\$1200.0',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),),
-                  SizedBox(width: 50.w,),
-                  Container(
-                    height: 26.h,
-                    width: 32.w,
+                    Container(
+                      height: 26.h,
+                      width: 32.w,
 
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: secondBlack,
-                      borderRadius: BorderRadius.circular(10.sp),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius:5,
-                          blurRadius: 20,
-                          offset: const Offset(0, 3), // cha // changes position of shadow
-                        ),
-                      ],
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: secondBlack,
+                        borderRadius: BorderRadius.circular(10.sp),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius:5,
+                            blurRadius: 20,
+                            offset: const Offset(0, 3), // cha // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child:const  Center(
+                        child:Icon(Icons.arrow_forward_outlined,color: Colors.white,size: 14,),
+                      ),
                     ),
-                    child:const  Center(
-                      child:Icon(Icons.arrow_forward_outlined,color: Colors.white,size: 14,),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
             ],
