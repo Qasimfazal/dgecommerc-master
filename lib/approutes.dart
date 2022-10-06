@@ -1,10 +1,12 @@
 
-import 'package:dgecommerc/Getstarted/GetStartedScreen.dart';
-import 'package:dgecommerc/Getstarted/Splash.dart';
 import 'package:get/get.dart';
-
+import 'Screens/BottomNavbar/bottomNavbar.dart';
+import 'Screens/CartScreen/CartScreen.dart';
 import 'Screens/DetailScreen/DetailScreen.dart';
+import 'Screens/Getstarted/GetStartedScreen.dart';
+import 'Screens/Getstarted/Splash.dart';
 import 'Screens/HomeScreen/HomeScreen.dart';
+import 'Screens/ProfileScreen/ProfileScreen.dart';
 
 appRoutes() => [
   GetPage(
@@ -22,7 +24,7 @@ appRoutes() => [
   ),
   GetPage(
     name: '/getstarted',
-    page: () =>const  GetStarted(),
+    page: () =>  GetStarted(),
    // middlewares: [MyMiddelware()],
     transition: Transition.leftToRightWithFade,
     transitionDuration: Duration(milliseconds: 500),
@@ -30,6 +32,27 @@ appRoutes() => [
   GetPage(
     name: '/detailscreen',
     page: () =>  DetailProductScreen(),
+   // middlewares: [MyMiddelware()],
+    transition: Transition.fade,
+    transitionDuration: Duration(milliseconds: 500),
+  ),
+  GetPage(
+    name: '/cardscreen',
+    page: () =>  CartScreen(),
+   // middlewares: [MyMiddelware()],
+    transition: Transition.fade,
+    transitionDuration: Duration(milliseconds: 500),
+  ),
+  GetPage(
+    name: '/navbar',
+    page: () =>  MyDashBoard(),
+   // middlewares: [MyMiddelware()],
+    transition: Transition.fade,
+    transitionDuration: Duration(milliseconds: 500),
+  ),
+  GetPage(
+    name: '/profile',
+    page: () =>  ProfileScreen(),
    // middlewares: [MyMiddelware()],
     transition: Transition.fade,
     transitionDuration: Duration(milliseconds: 500),

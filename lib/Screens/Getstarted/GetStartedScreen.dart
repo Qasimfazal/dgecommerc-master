@@ -126,7 +126,7 @@ class _GetStartedState extends State<GetStarted> {
                 const Spacer(),
                 InkWell(
                   onTap: (){
-                   Get.toNamed("/home");
+                   Get.toNamed("/navbar");
                   },
                   child: CircleAvatar(
                     radius: 30,
