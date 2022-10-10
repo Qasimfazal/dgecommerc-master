@@ -40,12 +40,21 @@ class ProductCard extends StatelessWidget {
                   AppConfig.RAW_BASE_URL1+'/'+img!),
             ),
             // SizedBox(height: 20.h,),
-            Text(name,style: TextStyle(fontSize: 12.sp),),
+            Container(
+                height: 30.h,
+
+                child: Text(name,style: TextStyle(fontSize: 12.sp),)),
             Text(unit,style: TextStyle(fontSize: 9.sp),),
             // SizedBox(height: 10.h,),
             Row(
               children: [
-                Text("Rs "+price,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                Container(
+                  width: 100.w,
+                  child: Text('$price',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),
+                  ),
+                ),
                 const Spacer(),
                 Container(
                   height: 26.h,

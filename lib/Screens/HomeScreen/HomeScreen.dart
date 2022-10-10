@@ -18,6 +18,7 @@ class HomeView extends StatelessWidget {
   HomeController controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(14.0),
@@ -49,7 +50,10 @@ class HomeView extends StatelessWidget {
                 'Best seller',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.sp),
               ),
-              MiniProductRow(context),
+              Container(
+                height: size.height*3.3,
+                  //flex: 1,
+                  child: MiniProductRow()),
             ],
           ),
         ),
@@ -151,93 +155,104 @@ class HomeView extends StatelessWidget {
     return   GetBuilder<HomeController>(
       builder: (_) => controller.isloadingExplore
           ? Container(
-        child: SizedBox(
-          //s  width: 200.0.w,
-            height: 300.0.h,
-            child: GetBuilder<HomeController>(
-                builder: (_dx) =>
-                    ListView.builder(
-                      itemCount: _dx.productlist.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return InkWell(
-                          onTap: (){
-                           // log(_dx.productlist[index].id.toString());
-                            Get.toNamed('/detailscreen',arguments: _dx.productlist[index].id.toString());
+
+         child:   SizedBox(
+              //s  width: 200.0.w,
+                height: 300.0.h,
+                child: GetBuilder<HomeController>(
+                    builder: (_dx) =>
+                        ListView.builder(
+                          itemCount: _dx.productlist.length,
+                          scrollDirection: Axis.horizontal,
+                          controller: _dx.sccontroller,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return InkWell(
+                              onTap: (){
+                               // log(_dx.productlist[index].id.toString());
+                                Get.toNamed('/detailscreen',arguments: _dx.productlist[index].id.toString());
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 7.w, vertical: 15.w),
+                                child: ProductCard(
+                                    _dx.productlist[index].thumbnailImage ?? "",
+                                    _dx.productlist[index].name ?? "",
+                                    _dx.productlist[index].unit ?? "",
+                                    _dx.productlist[index].basePrice??""),
+                              ),
+                            );
                           },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 7.w, vertical: 15.w),
-                            child: ProductCard(
-                                _dx.productlist[index].thumbnailImage ?? "",
-                                _dx.productlist[index].name ?? "",
-                                _dx.productlist[index].unit ?? "",
-                                _dx.productlist[index].basePrice.toString()),
-                          ),
-                        );
-                      },
-                    ),
-            ) ,
-      ))
-          : Shimmer.fromColors(
+                        ),
+                ) ,)
+         ):  Shimmer.fromColors(
         baseColor: Colors.grey.shade300,
         highlightColor: Colors.white70,
         child:  Container(
           height: 290.h,
-          child: ListView.builder(
+          child:   ListView.builder(
             itemCount: 5,
             scrollDirection: Axis.horizontal,
+           // controller: _dx.sccontroller,
             itemBuilder: (BuildContext ctx, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 7.w, vertical: 15.w),
                 child: ProductCard(
                      "",
-                     "",
-                     "",
-                   "",),
+          "",
+                    "",
+             ""),
               );
             },
           ),
         ),
+
+
+
+
+
+        // Container(
+        //   height: 300.h,
+        //  // width: 200,
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     borderRadius: BorderRadius.circular(20.sp),
+        //
+        //   ),
+        // ),
       ),
     );
   }
 
 
-Widget MiniProductRow(ctx){
-    final size = MediaQuery.of(ctx).size;
+Widget MiniProductRow(){
+  //final size = MediaQuery.of(ctx).size;
     return  GetBuilder<HomeController>(
       builder: (_) => controller.isloadingMiniCard
-          ? Container(
-          child: SizedBox(
-
-            height: size.height,
-            child: GetBuilder<HomeController>(
-              builder: (_dx) =>
-                  ListView.builder(
-                    itemCount: _dx.MiniCardList.length,
-                    physics:  NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext ctx, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 7.w, vertical: 15.w),
-                        child: InkWell(
-                          onTap: (){
-                            log(_dx.MiniCardList[index].id.toString());
-                            Get.toNamed('/detailscreen',arguments: _dx.productlist[index].id.toString());
-                          },
-                          child: MiniProductCard(
-                              _dx.MiniCardList[index].thumbnailImage ?? "",
-                              _dx.MiniCardList[index].name ?? "",
-                              _dx.MiniCardList[index].rating.toString() ?? "",
-                              _dx.MiniCardList[index].basePrice.toString()),
-                        ),
-                      );
-                    },
-                  ),
-            ) ,
-          ))
+          ? GetBuilder<HomeController>(
+            builder: (_dx) =>
+                ListView.builder(
+                  itemCount: _dx.MiniCardList.length,
+                  physics:  NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext ctx, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 7.w, vertical: 15.w),
+                      child: InkWell(
+                        onTap: (){
+                          log(_dx.MiniCardList[index].id.toString());
+                          Get.toNamed('/detailscreen',arguments: _dx.MiniCardList[index].id.toString());
+                        },
+                        child: MiniProductCard(
+                            _dx.MiniCardList[index].thumbnailImage ?? "",
+                            _dx.MiniCardList[index].name ?? "",
+                            _dx.MiniCardList[index].rating.toString() ?? "",
+                            _dx.MiniCardList[index].basePrice.toString()),
+                      ),
+                    );
+                  },
+                ),
+          )
           : Shimmer.fromColors(
         baseColor: Colors.grey.shade300,
         highlightColor: Colors.white70,

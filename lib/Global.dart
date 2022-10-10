@@ -17,3 +17,7 @@ final logotsyle = TextStyle(fontSize: 25.sp,color: Colors.white, fontWeight: Fon
 /// Detail Product Style
 final RsStyle =TextStyle(fontSize: 20.sp,color: secondBlack,fontWeight: FontWeight.bold);
 final SelectColo =TextStyle(fontSize: 15.sp,color: Colors.grey,fontWeight: FontWeight.bold);
+
+
+///Prefrences list
+// await prefs.setStringList('items', <String>['Earth', 'Moon', 'Sun']);

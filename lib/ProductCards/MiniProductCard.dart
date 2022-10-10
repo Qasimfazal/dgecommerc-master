@@ -12,8 +12,14 @@ class MiniProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   // log(name.length.toString());
+   //  var name;
+   //  if(name.length > 40){
+   //   name = name.split(' ');
+   //   print(name);
+   //  }
     return  Container(
-      height: 80.h,
+      height: 90.h,
       // width: 100.w,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -34,7 +40,7 @@ class MiniProductCard extends StatelessWidget {
           SizedBox(width: 10.w,),
           Container(
               height: 60,
-              child: Image.network(  AppConfig.RAW_BASE_URL1+'/'+img!,height: 70.h,)),
+              child: Image.network(  AppConfig.RAW_BASE_URL1+'/'+img!,height: 60.h,)),
 
           SizedBox(width: 10.w,),
           Column(
@@ -42,8 +48,26 @@ class MiniProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 10.h,),
-              Text(name??'Jougers',style: TextStyle(fontSize: 11.sp),),
-              Text(unit??'Addidas',style: TextStyle(fontSize: 12.sp),),
+              Flexible(
+                child:  Container(
+                    width: 180.w,
+                 // height: 50.h,
+                  child:  Text(
+                    name??'null',
+                 //   maxLines: 1,
+                   overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color:  Color(0xFF212121),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              //Text(name??'Jougers',style: TextStyle(fontSize: 11.sp),),
+
+             // Text(unit??'Addidas',style: TextStyle(fontSize: 12.sp),),
               Container(
                 width: MediaQuery.of(context).size.width/2,
                 height: 40.h,

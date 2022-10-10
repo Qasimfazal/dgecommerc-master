@@ -17,7 +17,7 @@ import 'DetailScreenController.dart';
 
 class DetailProductScreen extends StatelessWidget {
   DetailScreenController controller = Get.put(DetailScreenController());
-  HomeController Homecontroller = Get.put(HomeController());
+  //HomeController Homecontroller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -277,31 +277,33 @@ class DetailProductScreen extends StatelessWidget {
     );
   }
   Widget ProductTopRow(){
-    return   GetBuilder<HomeController>(
-      builder: (_) => Homecontroller.isloadingExplore
+    return   GetBuilder<DetailScreenController>(
+      builder: (_) => controller.isloadingRelated
           ? Container(
           child: SizedBox(
             //s  width: 200.0.w,
-            height: 260.0.h,
-            child: GetBuilder<HomeController>(
+            height: 270.0.h,
+            child: GetBuilder<DetailScreenController>(
               builder: (_dx) =>
                   ListView.builder(
-                    itemCount: _dx.productlist.length,
+                    itemCount: _dx.RelatedProductList.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext ctx, index) {
                       return InkWell(
                         onTap: (){
-                          // log(_dx.productlist[index].id.toString());
-                          Get.toNamed('/detailscreen',arguments: _dx.productlist[index].id.toString());
+                           log(_dx.RelatedProductList[index].id.toString());
+                         // Get.toNamed('/detailscreen',arguments: _dx.RelatedProductList[index].id.toString());
+                        _dx.pageRefresh(_dx.RelatedProductList[index].id.toString());
+
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 7.w, vertical: 15.h),
                           child: ProductCard(
-                              _dx.productlist[index].thumbnailImage ?? "",
-                              _dx.productlist[index].name ?? "",
-                              _dx.productlist[index].unit ?? "",
-                              _dx.productlist[index].basePrice.toString()),
+                              _dx.RelatedProductList[index].thumbnailImage ?? "",
+                              _dx.RelatedProductList[index].name ?? "",
+                              _dx.RelatedProductList[index].unit ?? "",
+                              "RS "+_dx.RelatedProductList[index].basePrice.toString()),
                         ),
                       );
                     },
@@ -336,34 +338,37 @@ class DetailProductScreen extends StatelessWidget {
 
   Widget MiniProductRow(ctx){
     final size = MediaQuery.of(ctx).size;
-    return  GetBuilder<HomeController>(
-      builder: (_) => Homecontroller.isloadingMiniCard
+    return  GetBuilder<DetailScreenController>(
+      builder: (_) => controller.isloading
           ? Container(
           child: SizedBox(
 
-            height: size.height,
-            child: GetBuilder<HomeController>(
+            height:600.h,
+            child: GetBuilder<DetailScreenController>(
               builder: (_dx) =>
-                  ListView.builder(
-                    itemCount: _dx.MiniCardList.length,
-                    physics:  NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext ctx, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 7.w, vertical: 15.w),
-                        child: InkWell(
-                          onTap: (){
-                            log(_dx.MiniCardList[index].id.toString());
-                            Get.toNamed('/detailscreen',arguments: _dx.productlist[index].id.toString());
-                          },
-                          child: MiniProductCard(
-                              _dx.MiniCardList[index].thumbnailImage ?? "",
-                              _dx.MiniCardList[index].name ?? "",
-                              _dx.MiniCardList[index].rating.toString() ?? "",
-                              _dx.MiniCardList[index].basePrice.toString()),
-                        ),
-                      );
-                    },
+                  Container(
+                    child: ListView.builder(
+                      itemCount: _dx.TopSellingList.length,
+                      physics:  NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext ctx, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 7.w, vertical: 15.w),
+                          child: InkWell(
+                            onTap: (){
+                              log(_dx.TopSellingList[index].id.toString());
+                              _dx.pageRefresh(_dx.TopSellingList[index].id.toString());
+                             // Get.offAndToNamed('/detailscreen',arguments: _dx.TopSellingList[index].id.toString());
+                            },
+                            child: MiniProductCard(
+                                _dx.TopSellingList[index].thumbnailImage ?? "",
+                                _dx.TopSellingList[index].name ?? "",
+                                _dx.TopSellingList[index].rating.toString() ?? "",
+                                "RS "+_dx.TopSellingList[index].basePrice.toString()),
+                          ),
+                        );
+                      },
+                    ),
                   ),
             ) ,
           ))
@@ -372,6 +377,7 @@ class DetailProductScreen extends StatelessWidget {
         highlightColor: Colors.white70,
         child:  Container(
           height: 290.h,
+          width: 500,
           child: ListView.builder(
             itemCount: 5,
             physics: const NeverScrollableScrollPhysics(),

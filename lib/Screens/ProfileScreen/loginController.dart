@@ -28,4 +28,23 @@ class LoginController extends GetxController{
     }
   }
 
+  Future<LoginResponse> getLoginResponse(
+      @required String email, @required String password) async {
+    var post_body = jsonEncode({
+      "email": "${email}",
+      "password": "$password",
+      "identity_matrix": AppConfig.purchase_code
+    });
+
+    Uri url = Uri.parse("${AppConfig.BASE_URL}/auth/login");
+    final response = await http.post(url,
+        headers: {
+          "Accept": "*/*",
+          "Content-Type": "application/json",
+          "App-Language": app_language.$,
+        },
+        body: post_body);
+
+    return loginResponseFromJson(response.body);
+  }
 }
