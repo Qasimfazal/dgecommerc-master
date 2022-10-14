@@ -11,6 +11,7 @@ import 'loginController.dart';
 class ProfileScreen extends StatelessWidget {
   LoginController loginCont = Get.put(LoginController());
 
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -37,19 +38,22 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: GetBuilder<LoginController>(
-          builder: (dx) => loginCont.isLogin
+          builder: (dx) =>
+          dx.isLogin
               ? Container(
-                  height: size.height,
-                  width: size.width,
-                  color: primaryColor,
-                  child: Login(),
-                )
+            height: size.height,
+            width: size.width,
+            color: primaryColor,
+            child: Login(),
+          )
               : Container(
-                  height: size.height,
-                  width: size.width,
-                  color: primaryColor,
-                  child: SigninForm(),
-                )),
+            height: size.height,
+            width: size.width,
+            color: primaryColor,
+            child: SigninForm(),
+          )
+
+      ),
     );
   }
 
@@ -60,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Column(
             children: [
-              SearchTextFormField('Email', 70.h, 300.w,
+              SearchTextFormField( 'email', 70.h, 300.w,
                   TextController: _dx.Email,
                   fillcolor: Colors.white,
                   iconprefix: Icon(
@@ -77,13 +81,19 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           InkWell(
-            onTap: () {
+            onTap: () async{
               // print(_dx.em);
               // print(_dx.Password);
-
-              _dx.login(_dx.Email, _dx.Password);
+await _dx.getLoginResponse(_dx.Email.text, _dx.Password.text);
+          //  print(  loginCont.LoginList[0].email);
+            //  _dx.login(_dx.Email, _dx.Password);
             },
-            child: ButtonWidget("Login"),
+            child:Container(
+              height: 50.h,
+              width: 300.w,
+              color: Colors.black,
+              child: Center(child: Text("Login",style: TextStyle(color: Colors.white),)),
+            ),
           )
         ],
       ),
@@ -91,7 +101,8 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget Login() {
-    return Column(
+    return GetBuilder<LoginController>(
+        builder: (_dx) => Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
@@ -110,18 +121,18 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-        Text('Muhammad Qasim Mehmood',
+        Text(_dx.LoginList[0].user.name ??'Muhammad Qasim Mehmood',
             style: TextStyle(
               color: Colors.white,
             )),
-        Text('Qasimfazal27@gmail.com',
+        Text(_dx.LoginList[0].user.email??'Qasimfazal27@gmail.com',
             style: TextStyle(
               color: Colors.white,
             )),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text('+92023098766',
+            Text(_dx.LoginList[0].user.phone??'+92023098766',
                 style: TextStyle(
                   color: Colors.white,
                 )),
@@ -194,6 +205,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ],
+    )
     );
   }
 }

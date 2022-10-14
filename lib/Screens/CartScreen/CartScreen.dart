@@ -1,21 +1,20 @@
 
+import 'package:dgecommerc/Screens/CartScreen/CardController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../Global.dart';
-import 'CardController.dart';
 
 class CartScreen extends StatelessWidget {
 
-  CartController controller = Get.put(CartController());
-
+  CartController cardcontroller = Get.put(CartController());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body:  GetBuilder<CartController>(
+       // init: cardcontroller.getCard ,
         builder: (_dx) => Container(
         height: size.height,
         width: size.width,
@@ -30,7 +29,10 @@ class CartScreen extends StatelessWidget {
         ),
       ),
       ),
-      bottomNavigationBar: TotalContainer(),
+      bottomNavigationBar: GetBuilder<CartController>(
+      // init: cardcontroller.getCard ,
+      builder: (_dx) => TotalContainer(_dx)
+      ),
     );
   }
   Widget AppbarRow() {
@@ -78,7 +80,7 @@ class CartScreen extends StatelessWidget {
       ),
     );
   }
-  Widget TotalContainer() {
+  Widget TotalContainer(d) {
    // final size = MediaQuery.of(context).size;
     return Container(
       height: 200.h,
@@ -173,22 +175,27 @@ class CartScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10.h,),
-            Container(
-              height: 50.h,
-             // width: size.width.w,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 17,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+            InkWell(
+              onTap: (){
+                d.getCard();
+              },
+              child: Container(
+                height: 50.h,
+               // width: size.width.w,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 17,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Center(child: Text('Checkout',style: TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.white),)),
               ),
-              child: Center(child: Text('Checkout',style: TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.white),)),
             ),
 
           ],

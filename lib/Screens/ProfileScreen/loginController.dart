@@ -1,50 +1,47 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Config.dart';
+import '../CartScreen/CardController.dart';
+import 'LoginModel.dart';
+
 class LoginController extends GetxController{
+ // final cartcontroller = Get.find<CartController>;
   bool isLogin = false;
   String? em ;
   String? pass;
+Dio dio = Dio();
 
+  var LoginList =[].obs;
   TextEditingController Email = TextEditingController();
   TextEditingController Password = TextEditingController();
   void Signout(){
     isLogin =false;
     update();
   }
-  void login( email , password){
-     print('Enter');
-    String email = 'Qasim27@gmail.com';
-    String Pass = 'Qasim';
-    em = Email.text;
-    pass = Password.text;
-    update();
-    if(em == email && pass == Pass){
-      isLogin = true;
-      update();
-      Get.snackbar('Sucess', 'Sucessfully Login');
-    }else{
-     Get.snackbar('Login Error', 'Wrong Credentials ');
-    }
-  }
 
-  Future<LoginResponse> getLoginResponse(
-      @required String email, @required String password) async {
-    var post_body = jsonEncode({
-      "email": "${email}",
-      "password": "$password",
-      "identity_matrix": AppConfig.purchase_code
+
+   Future<RxList>  getLoginResponse(@required String email, @required String password) async {
+    var responce = await dio.post('https://turkishemarket.com/api/v2/auth/login',
+    data: {
+    "email" : email,
+      "password" : password,
     });
+    if (responce.statusCode == 200) {
+      //for (var i in responce.data['data']) {
+      LoginList.add(await LoginModel.fromJson(responce.data));
+      print(responce.data);
+     isLogin = LoginList[0].result;
+      update();
 
-    Uri url = Uri.parse("${AppConfig.BASE_URL}/auth/login");
-    final response = await http.post(url,
-        headers: {
-          "Accept": "*/*",
-          "Content-Type": "application/json",
-          "App-Language": app_language.$,
-        },
-        body: post_body);
+    }else{
+      Get.snackbar('Error',"Status 404");
+      update();
+    }
+   // print(LoginList.expires_at.toString());
+    return LoginList;
 
-    return loginResponseFromJson(response.body);
+    print(await responce);
   }
 }
