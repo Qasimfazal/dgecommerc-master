@@ -38,14 +38,18 @@ class CartController extends GetxController {
     print("Enter get card");
    final logincontroller = Get.find<LoginController>();
    final token = logincontroller.LoginList[0].access_token;
-   print(token);
+   final bearer = "Bearer "+token;
+   final id = logincontroller.LoginList[0].user.id.toString();
+   print(id);
+   print(bearer);
   // final access_token = Get.find<LoginController>();
   //  print(userid);
   //  print(access_token);
-    var responce = await dio.post('https://turkishemarket.com/api/v2/carts/${logincontroller.LoginList[0].user.id.toString()}',
+    var responce = await dio.post('https://turkishemarket.com/api/v2/carts/${id}',
         data: {
      // "Content-Type" : "application/json",
-          "Authorization" : "Bearer "+token ,
+          "Authorization" : bearer ,
+          'Cookie': 'XSRF-TOKEN=hzYQdGKHkdaFj2NKlasOlnxz56xjvyqa4Lq1MnE5; turkish_emarket_session=uFIL2sdYjc2M61XT5aX3sxGI2SIvvuHDj8yuB30P'
         });
     print(responce.data);
     if (responce.statusCode == 200) {
