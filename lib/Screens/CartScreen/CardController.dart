@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -16,21 +19,26 @@ class CartController extends GetxController {
 
   }
 
-  int  count = 0;
-  Dio dio = Dio();
-  void Addfunc (){
-    count  ++;
-    update();
-  }
-  void Subtract (){
-    count  --;
-    update();
 
-  }
+
+  Dio dio = Dio();
+  // void Addfunc (count){
+  //   print(count);
+  //   quantity  ++;
+  //   //return quantity;
+  // //  update();
+  // }
+  // void Subtract (count){
+  //   quantity  --;
+  // //  update();
+  // //  return quantity;
+  // }
 
   bool isLoading = false ;
   //var CardList = [].obs;
   List<CardModel> CardList=<CardModel>[].obs;
+  dynamic product = [].obs;
+  List<int> count = [] ;
 
   //https://turkishemarket.com/api/v2/carts/92
 
@@ -40,24 +48,44 @@ class CartController extends GetxController {
    final token = logincontroller.LoginList[0].access_token;
    final bearer = "Bearer "+token;
    final id = logincontroller.LoginList[0].user.id.toString();
-   print(id);
-   print(bearer);
-  // final access_token = Get.find<LoginController>();
-  //  print(userid);
-  //  print(access_token);
+   // print(id);
+   // print(bearer);
+    CardList.clear();
+
+    // var params =  {
+    //   "Authorization" : bearer ,
+    // };
+    // var response = await dio.post('https://turkishemarket.com/api/v2/carts/${id}',
+    // options: Options(headers: {
+    //   HttpHeaders.contentTypeHeader: "application/json",
+    // }),
+    // data: jsonEncode(params),
+    // );
+    // print(response);
+
+
     var responce = await dio.post('https://turkishemarket.com/api/v2/carts/${id}',
-        data: {
-     // "Content-Type" : "application/json",
-          "Authorization" : bearer ,
-          'Cookie': 'XSRF-TOKEN=hzYQdGKHkdaFj2NKlasOlnxz56xjvyqa4Lq1MnE5; turkish_emarket_session=uFIL2sdYjc2M61XT5aX3sxGI2SIvvuHDj8yuB30P'
-        });
-    print(responce.data);
+         options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+           HttpHeaders.authorizationHeader :bearer,
+        }),
+
+        );
     if (responce.statusCode == 200) {
-      //for (var i in responce.data['data']) {
-      CardList.add( CardModel.fromJson(responce.data));
-      print(responce.data);
+      for (var i in responce.data) {
+        CardList.add(CardModel.fromJson(i));
+      }
+
       isLoading = true ;
-      print(responce.data);
+       product=CardList;
+      // int a = product.length;
+      // for(int i = 0 ; i >= a ; i ++){
+      //   print(i);
+      //   count = product[i].cartItems[i].quantity;
+      //   update();
+      // }
+
+
 
       update();
 

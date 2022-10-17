@@ -1,14 +1,20 @@
 
+import 'dart:developer';
+
 import 'package:dgecommerc/Screens/CartScreen/CardController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../../Config.dart';
 import '../../Global.dart';
+import '../../ProductCards/MiniProductCard.dart';
 
 class CartScreen extends StatelessWidget {
 
   CartController cardcontroller = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -24,7 +30,7 @@ class CartScreen extends StatelessWidget {
               height: 15.h,
             ),
             AppbarRow(),
-            CardList(_dx),
+            Expanded(child: MiniProductRow()),
           ],
         ),
       ),
@@ -80,7 +86,7 @@ class CartScreen extends StatelessWidget {
       ),
     );
   }
-  Widget TotalContainer(d) {
+  Widget TotalContainer( d) {
    // final size = MediaQuery.of(context).size;
     return Container(
       height: 200.h,
@@ -176,8 +182,9 @@ class CartScreen extends StatelessWidget {
             ),
             SizedBox(height: 10.h,),
             InkWell(
-              onTap: (){
-                d.getCard();
+              onTap: ()async{
+              await  cardcontroller.getCard();
+               // d.getCard();
               },
               child: Container(
                 height: 50.h,
@@ -203,75 +210,268 @@ class CartScreen extends StatelessWidget {
       ),
     );
   }
-  Widget CardList(_d){
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
 
-        Icon(Icons.delete_outline,size: 20.sp,color: Colors.red,),
-        Container(
-            height: 100.h,
-            child: Image.network('https://triveniworld.com/uploads/products/Apple-iPhone-13-Smartphone-491997701-i-2-1200Wx1200H7.jpg')),
 
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Iphone 13 pro ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.sp),),
-            SizedBox(height: 20.h,),
-            Container(
-              width: 220.w,
-              child: Row(
-                children: [
-                  Text('\$1200',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.sp,color: primaryColor)),
-                  Spacer(),
-                  InkWell(
+  Widget MiniProductRow(){
+    //final size = MediaQuery.of(ctx).size;
+    return  GetBuilder<CartController>(
+      builder: (_) => cardcontroller.isLoading
+          ? GetBuilder<CartController>(
+        builder: (_dx) =>
+            ListView.builder(
+              itemCount: _dx.product.length,
+              // physics:  NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext ctx, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 7.w, vertical: 15.w),
+                  child: InkWell(
                     onTap: (){
-                      _d.Addfunc();
+                      // log(_dx.CardList[index].name.toString());
+                      // Get.toNamed('/detailscreen',arguments: _dx.MiniCardList[index].id.toString());
                     },
-                    child: Container(
-                      height: 25.h,
-                      width: 25.w,
+                    child:  Container(
+                      height: 90.h,
+                      // width: 100.w,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.grey)
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.sp),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius:5,
+                            blurRadius: 8,
+                            offset: const Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
                       ),
-                      child: Center(child: Icon(Icons.add,size: 20,)),
-                    ),
-                  ),
-                  SizedBox(width: 5,),
-                  Text('${_d.count}'),
-                  SizedBox(width: 5,),
-                  InkWell(
-                    onTap: (){
-                      if(_d.count > 0){
-                        _d.Subtract();
-                      }else{
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 10.w,),
+                          Container(
+                              height: 60,
+                              child: Image.network(  AppConfig.RAW_BASE_URL1+'/'+_dx.product[index].cartItems[index].productThumbnailImage,height: 60.h,)),
 
-                      }
+                          SizedBox(width: 10.w,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10.h,),
+                              Flexible(
+                                child:  Container(
+                                  width: 180.w,
+                                  // height: 50.h,
+                                  child:  Text(
+                                    _dx.product[index].cartItems[index].productName??"Null",
+                                    //   maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                      color:  Color(0xFF212121),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
-                    },
-                    child: Container(
-                      height: 25.h,
-                      width: 25.w,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.grey)
+                              //Text(name??'Jougers',style: TextStyle(fontSize: 11.sp),),
+
+                              // Text(unit??'Addidas',style: TextStyle(fontSize: 12.sp),),
+                              Container(
+                               // width: MediaQuery.of(context).size.width/2,
+                                height: 40.h,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text( _dx.product[index].cartItems[index].price.toString()??"Null",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),),
+
+                                    Container(
+                                      width: 220.w,
+                                      child: Row(
+                                        children: [
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: (){
+                                              //_dx.Addfunc(_dx.product[index].cartItems[index].quantity);
+                                              _dx.product[index].cartItems[index].quantity++;
+                                              print(_dx.product[index].cartItems[index].quantity);
+                                            },
+                                            child: Container(
+                                              height: 25.h,
+                                              width: 25.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  border: Border.all(color: Colors.grey)
+                                              ),
+                                              child: Center(child: Icon(Icons.add,size: 20,)),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+
+
+                                          Text('${_dx.product[index].cartItems[index].quantity}'),
+
+                                          SizedBox(width: 5,),
+                                          InkWell(
+                                            onTap: (){
+                                              if(_dx.product[index].cartItems[index].quantity> 1){
+                                               Obx(() => _dx.product[index].cartItems[index].quantity--);
+                                                print(_dx.product[index].cartItems[index].quantity);
+
+                                              }else{
+                                                Get.snackbar('Sad', 'At least Ek tu buy kro ');
+                                              }
+
+                                            },
+                                            child: Container(
+                                              height: 25.h,
+                                              width: 25.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  border: Border.all(color: Colors.grey)
+                                              ),
+                                              child: Center(child: Icon(Icons.remove,size: 20,)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // SizedBox(width: 10.w,),
+                                    ),
+                                    SizedBox(width: 20.w,),
+
+                                  ],
+                                ),
+                              ),
+
+                            ],
+                          ),
+
+                        ],
                       ),
-                      child: Center(child: Icon(Icons.remove,size: 20,)),
+
+
                     ),
+                    // child: MiniProductCard(
+                    //   _dx.product[index].cartItems[index].productThumbnailImage??"Null",
+                    //   _dx.product[index].cartItems[index].productName??"Null",
+                    //   _dx.product[index].cartItems[index].quantity.toString()??"Null",
+                    //   _dx.product[index].cartItems[index].price.toString()??"Null",
+                    // ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-          ],
+      )
+          : Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.white70,
+        child:  Container(
+          height: 290.h,
+          child: ListView.builder(
+            itemCount: 5,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext ctx, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 7.w, vertical: 15.w),
+                child: Container(
+                  height: 10,
+                  width: 0,
+                )
+              );
+            },
+          ),
         ),
 
 
 
 
-      ],
+
+        // Container(
+        //   height: 300.h,
+        //  // width: 200,
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     borderRadius: BorderRadius.circular(20.sp),
+        //
+        //   ),
+        // ),
+      ),
     );
   }
+  // Widget CardList(_d){
+  //   return Row(
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //
+  //       Icon(Icons.delete_outline,size: 20.sp,color: Colors.red,),
+  //       Container(
+  //           height: 100.h,
+  //           child: Image.network('https://triveniworld.com/uploads/products/Apple-iPhone-13-Smartphone-491997701-i-2-1200Wx1200H7.jpg')),
+  //
+  //       Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text('Iphone 13 pro ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.sp),),
+  //           SizedBox(height: 20.h,),
+  //           Container(
+  //             width: 220.w,
+  //             child: Row(
+  //               children: [
+  //                 Text('\$1200',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.sp,color: primaryColor)),
+  //                 Spacer(),
+  //                 InkWell(
+  //                   onTap: (){
+  //                     _d.Addfunc();
+  //                   },
+  //                   child: Container(
+  //                     height: 25.h,
+  //                     width: 25.w,
+  //                     decoration: BoxDecoration(
+  //                         borderRadius: BorderRadius.circular(5),
+  //                         border: Border.all(color: Colors.grey)
+  //                     ),
+  //                     child: Center(child: Icon(Icons.add,size: 20,)),
+  //                   ),
+  //                 ),
+  //                 SizedBox(width: 5,),
+  //                 Text('${_d.count}'),
+  //                 SizedBox(width: 5,),
+  //                 InkWell(
+  //                   onTap: (){
+  //                     if(_d.count > 0){
+  //                       _d.Subtract();
+  //                     }else{
+  //
+  //                     }
+  //
+  //                   },
+  //                   child: Container(
+  //                     height: 25.h,
+  //                     width: 25.w,
+  //                     decoration: BoxDecoration(
+  //                         borderRadius: BorderRadius.circular(5),
+  //                         border: Border.all(color: Colors.grey)
+  //                     ),
+  //                     child: Center(child: Icon(Icons.remove,size: 20,)),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //
+  //
+  //
+  //
+  //     ],
+  //   );
+  // }
 }

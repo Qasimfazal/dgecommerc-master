@@ -46,6 +46,7 @@ dependencies:
   bottom_navy_bar: ^6.0.0
   askai_animation_button:
   shared_preferences: ^2.0.15
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
