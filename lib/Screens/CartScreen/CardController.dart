@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../ProfileScreen/loginController.dart';
@@ -18,21 +19,15 @@ class CartController extends GetxController {
     super.onInit();
 
   }
-
+    Get_Auth(){
+     final   logincontroller =  Get.find<LoginController>();
+      final token = logincontroller.LoginList[0].access_token;
+      final bearer = "Bearer "+token;
+      final id = logincontroller.LoginList[0].user.id.toString();
+    }
 
 
   Dio dio = Dio();
-  // void Addfunc (count){
-  //   print(count);
-  //   quantity  ++;
-  //   //return quantity;
-  // //  update();
-  // }
-  // void Subtract (count){
-  //   quantity  --;
-  // //  update();
-  // //  return quantity;
-  // }
 
   bool isLoading = false ;
   //var CardList = [].obs;
@@ -44,14 +39,8 @@ class CartController extends GetxController {
 
   Future<List<CardModel>> getCard() async {
     print("Enter get card");
-   final logincontroller = Get.find<LoginController>();
-   final token = logincontroller.LoginList[0].access_token;
-   final bearer = "Bearer "+token;
-   final id = logincontroller.LoginList[0].user.id.toString();
-   // print(id);
-   // print(bearer);
+    await Get_Auth();
     CardList.clear();
-
     // var params =  {
     //   "Authorization" : bearer ,
     // };
@@ -62,12 +51,14 @@ class CartController extends GetxController {
     // data: jsonEncode(params),
     // );
     // print(response);
-
-
+    final   logincontroller =  Get.find<LoginController>();
+    final token = logincontroller.LoginList[0].access_token;
+    final bearer = "Bearer "+token;
+    final id = logincontroller.LoginList[0].user.id.toString();
     var responce = await dio.post('https://turkishemarket.com/api/v2/carts/${id}',
          options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
-           HttpHeaders.authorizationHeader :bearer,
+           HttpHeaders.authorizationHeader : bearer,
         }),
 
         );
@@ -75,27 +66,49 @@ class CartController extends GetxController {
       for (var i in responce.data) {
         CardList.add(CardModel.fromJson(i));
       }
-
       isLoading = true ;
        product=CardList;
-      // int a = product.length;
-      // for(int i = 0 ; i >= a ; i ++){
-      //   print(i);
-      //   count = product[i].cartItems[i].quantity;
-      //   update();
-      // }
-
-
-
       update();
-
     }else{
       Get.snackbar('Error',"Status 404");
       update();
     }
-    // print(LoginList.expires_at.toString());
     return CardList;
+  }
 
-    print(await responce);
+    AddCart (id,varient,userid,int quantity)async{
+    //  Get_Auth();
+      final   logincontroller =  Get.find<LoginController>();
+      final token = logincontroller.LoginList[0].access_token;
+      final bearer = "Bearer "+token;
+    ///carts/add
+    var pharm = {
+      "user_id":id.toString(),
+      "variant":varient,
+      "id":userid.toString(),
+      "quantity":quantity.toString(),
+      "cost_matrix":"",
+      "": bearer,
+    };
+
+      try{
+        var responce = await dio.post('https://turkishemarket.com/api/v2/carts/add/'+id.toString(),
+            // options: Options(headers: {
+            //   HttpHeaders.contentTypeHeader: "application/json",
+            //   HttpHeaders.authorizationHeader : bearer,
+            // }),
+            data: pharm
+        );
+      }catch (e){
+        print(e.toString());
+        // if(responce.statusCode == 200){
+        //
+        // }else{
+        //   Text("");
+        // }
+      }
+
+
+    return null;
   }
 }

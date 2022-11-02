@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'approutes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const MyApp());
 }

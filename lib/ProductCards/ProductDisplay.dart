@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../Config.dart';
 import '../Global.dart';
 class ProductCard extends StatelessWidget {
  final String img,name,unit,price;
-  ProductCard(this.img,this.name,this.unit,this.price);
+ final Function? function ;
+
+  ProductCard(this.img,this.name,this.unit,this.price,{this.function});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +40,7 @@ class ProductCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.sp),
               ),
               child: Image.network(
-                  AppConfig.RAW_BASE_URL1+'/'+img!),
+                  AppConfig.RAW_BASE_URL1+'/'+img),
             ),
             // SizedBox(height: 20.h,),
             Container(
@@ -56,25 +59,30 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Container(
-                  height: 26.h,
-                  width: 32.w,
+                InkWell(
+                  onTap: (){
+                    function;
+                  },
+                  child: Container(
+                    height: 26.h,
+                    width: 32.w,
 
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: secondBlack,
-                    borderRadius: BorderRadius.circular(10.sp),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius:5,
-                        blurRadius: 20,
-                        offset: const Offset(0, 3), // cha // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: const Center(
-                    child:Icon(Icons.add,color: Colors.white,size: 14,),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: secondBlack,
+                      borderRadius: BorderRadius.circular(10.sp),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius:5,
+                          blurRadius: 20,
+                          offset: const Offset(0, 3), // cha // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: const Center(
+                      child:Icon(Icons.add,color: Colors.white,size: 14,),
+                    ),
                   ),
                 ),
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const  primaryColor = Color(0xffED1E3A);
 const  secondBlack =  Colors.black;
@@ -21,3 +22,6 @@ final SelectColo =TextStyle(fontSize: 15.sp,color: Colors.grey,fontWeight: FontW
 
 ///Prefrences list
 // await prefs.setStringList('items', <String>['Earth', 'Moon', 'Sun']);
+// get()async{
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+// }

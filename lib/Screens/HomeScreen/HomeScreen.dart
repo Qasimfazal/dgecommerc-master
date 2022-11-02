@@ -11,11 +11,15 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../ProductCards/ProductDisplay.dart';
 import '../../Widgets/SearchTextform.dart';
+import '../CartScreen/CardController.dart';
+import '../ProfileScreen/loginController.dart';
 import 'HomeController.dart';
 
 class HomeView extends StatelessWidget {
   //const HomeView({Key? key}) : super(key: key);
   HomeController controller = Get.put(HomeController());
+  CartController cartController =Get.put(CartController());
+  LoginController  logincontroller = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -178,7 +182,15 @@ class HomeView extends StatelessWidget {
                                     _dx.productlist[index].thumbnailImage ?? "",
                                     _dx.productlist[index].name ?? "",
                                     _dx.productlist[index].unit ?? "",
-                                    _dx.productlist[index].basePrice??""),
+                                    _dx.productlist[index].basePrice??"",
+                                  // function:
+                                  //   cartController.AddCart(
+                                  //     logincontroller.LoginList[0].user.id.toString(),
+                                  //       "",
+                                  //     _dx.productlist[index].id,
+                                  //     1,
+                                  //   ),
+                                ),
                               ),
                             );
                           },
@@ -201,7 +213,7 @@ class HomeView extends StatelessWidget {
                      "",
           "",
                     "",
-             ""),
+             "",),
               );
             },
           ),

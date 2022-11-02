@@ -303,7 +303,8 @@ class DetailProductScreen extends StatelessWidget {
                               _dx.RelatedProductList[index].thumbnailImage ?? "",
                               _dx.RelatedProductList[index].name ?? "",
                               _dx.RelatedProductList[index].unit ?? "",
-                              "RS "+_dx.RelatedProductList[index].basePrice.toString()),
+                              "RS "+_dx.RelatedProductList[index].basePrice.toString(),
+                          ),
                         ),
                       );
                     },
@@ -326,7 +327,8 @@ class DetailProductScreen extends StatelessWidget {
                   "",
                   "",
                   "",
-                  "",),
+                  "",
+                ),
               );
             },
           ),

@@ -40,7 +40,7 @@ class MiniProductCard extends StatelessWidget {
           SizedBox(width: 10.w,),
           Container(
               height: 60,
-              child: Image.network(  AppConfig.RAW_BASE_URL1+'/'+img!,height: 60.h,)),
+              child: Image.network(  AppConfig.RAW_BASE_URL1+'/'+img,height: 60.h,)),
 
           SizedBox(width: 10.w,),
           Column(
@@ -53,7 +53,7 @@ class MiniProductCard extends StatelessWidget {
                     width: 180.w,
                  // height: 50.h,
                   child:  Text(
-                    name??'null',
+                    name,
                  //   maxLines: 1,
                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -75,7 +75,7 @@ class MiniProductCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween ,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(price??'\$1200.0',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                    Text(price,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold),),
                   //  SizedBox(width: 50.w,),
 
                   ],
